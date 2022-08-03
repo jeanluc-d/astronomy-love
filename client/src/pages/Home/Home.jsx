@@ -38,13 +38,13 @@ function Home() {
    * start date is initally yesterday
   */
   const [endDate, setEndDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date(endDate - (SECONDS_IN_A_DAY * 2)));
+  const [startDate, setStartDate] = useState(new Date(endDate - (SECONDS_IN_A_DAY)));
 
   /**
    * data is the most recent array of pictures sent from the api
    * displayData is all the pictures received from the api
   */
-  const { data } = useSWRImmutable(`${process.env.REACT_APP_ENDPOINT}/pictures?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`, fetcher);
+  const { data, error } = useSWRImmutable(`${process.env.REACT_APP_ENDPOINT}/pictures?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`, fetcher);
   const [displayData, setDisplayData] = useState(data);
   /**
    * used with SWR and React Infinite Scroll to load more data
@@ -98,22 +98,19 @@ function Home() {
 
   // on data fetch
   useEffect(() => {
-    // check for data
-    if (data?.length > 0) {
-      // set loading to false since we have data
-      if (data?.code !== 500) {
-        /**
+    // check no error then
+    if (!error) {
+      /**
          * add the new data to the display data
          * ternary operator to check if the data is already in the display data
          * if there is data, then spread it then add the new data
         */
-        if (displayData) {
-          setDisplayData([...displayData, ...data]);
-          return;
-        }
-        if (loading) setLoading(false);
-        setDisplayData(data);
+      if (displayData) {
+        setDisplayData([...displayData, ...data]);
+        return;
       }
+      if (loading) setLoading(false);
+      setDisplayData(data);
     }
   }, [data]);
 
@@ -165,7 +162,7 @@ function Home() {
     );
   }
 
-  if (!displayData && data?.code >= 500) {
+  if (error) {
     return (
       <Suspense fallback={<RocketMan />}>
         <ServerErrorPage data={data} />
