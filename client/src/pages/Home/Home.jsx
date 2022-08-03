@@ -17,7 +17,7 @@ import {
   PictureOfTheDay, Navbar, RocketMan, SpaceShip,
 } from 'components';
 
-const ServerErrorPage = React.lazy(() => ('./ServerErrorPage'));
+const ServerErrorPage = React.lazy(() => ('./ServerErrorPage/ServerErrorPage'));
 
 function Home() {
   // loading until the data is fetched

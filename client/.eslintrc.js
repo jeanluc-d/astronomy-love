@@ -27,14 +27,14 @@ module.exports = {
   settings: {
     'import/resolver': {
       alias: [
-        ['components', './src/components/index'],
-        ['api', './src/api'],
-        ['utils', './src/utils/utils'],
-        ['constants', './src/constants/constants'],
-        ['pictureOfTheDay', './src/components/PictureOfTheDay/PictureOfTheDay'],
-        ['poster', './src/api/poster'],
-        ['fetcher', './src/api/fetcher'],
-        ['speech', './src/speech/speech'],
+        ['components', './client/src/components/index'],
+        ['api', './client/src/api'],
+        ['utils', './client/src/utils/utils'],
+        ['constants', './client/src/constants/constants'],
+        ['pictureOfTheDay', './client/src/components/PictureOfTheDay/PictureOfTheDay'],
+        ['poster', './client/src/api/poster'],
+        ['fetcher', './client/src/api/fetcher'],
+        ['speech', './client/src/speech/speech'],
       ],
     },
   },

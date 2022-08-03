@@ -73,7 +73,7 @@ function Navbar({
                 lang={lang}
                 currentVoiceName={voiceName}
                 voices={voices}
-                handleOnSetVoice={handleOnSetVoice}
+                handleOnSetVoice={handleVoiceSelection}
                 handleCancelAudio={handleCancelAudio}
               />
             </div>
