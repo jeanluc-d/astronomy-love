@@ -10,9 +10,10 @@
   "description": "",
   "source": "client/public/index.html",
   "scripts": {
-    "start": "parcel client -p 3000",
+    "start": "node server/server.js",
     "build": "parcel build ./client/public/index.html --public-url ./",
-    "server": "nodemon server/server.js"
+    "dev-server": "nodemon server/server.js",
+    "dev-client": "parcel client -p 3000"
   },
   "keywords": [],
   "author": "",
