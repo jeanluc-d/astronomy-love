@@ -44,9 +44,9 @@ function Home() {
    * data is the most recent array of pictures sent from the api
    * displayData is all the pictures received from the api
   */
-  const { data } = useSWRImmutable(`${process.env.REACT_APP_ENDPOINT}/pictures?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`, fetcher);
+  const { data, error } = useSWRImmutable(`${process.env.REACT_APP_ENDPOINT}/pictures?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`, fetcher);
   const [displayData, setDisplayData] = useState(data);
-
+  console.log('error', !error);
   /**
    * used with SWR and React Infinite Scroll to load more data
    * the range of the date gets backed by 2 days
