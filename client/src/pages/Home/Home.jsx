@@ -38,7 +38,7 @@ function Home() {
    * start date is initally yesterday
   */
   const [endDate, setEndDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date(endDate - (SECONDS_IN_A_DAY)));
+  const [startDate, setStartDate] = useState(new Date(endDate - (SECONDS_IN_A_DAY * 2)));
 
   /**
    * data is the most recent array of pictures sent from the api
@@ -99,19 +99,23 @@ function Home() {
   // on data fetch
   useEffect(() => {
     // check no error then
-    if (!error) {
-      /**
+    if (data?.length > 0) {
+      // set loading to false since we have data
+      if (!error) {
+        /**
          * add the new data to the display data
          * ternary operator to check if the data is already in the display data
          * if there is data, then spread it then add the new data
         */
-      if (displayData) {
-        setDisplayData([...displayData, ...data]);
-        return;
+        if (displayData) {
+          setDisplayData([...displayData, ...data]);
+          return;
+        }
+        if (loading) setLoading(false);
+        setDisplayData([...data]);
       }
-      if (loading) setLoading(false);
-      setDisplayData(data);
     }
+    if (loading) setLoading(false);
   }, [data]);
 
   // on language change it will update the language of the text to speech - if it's available
