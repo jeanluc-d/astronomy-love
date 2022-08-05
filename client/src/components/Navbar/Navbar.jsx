@@ -5,7 +5,7 @@ import RefreshButton from './NavbarComponents/RefreshButton/RefreshButton';
 import VoicesDropDown from './NavbarComponents/VoicesDropDown/VoicesDropDown';
 
 function Navbar({
-  handleSetLanguage, lang, voices, voiceName, handleOnSetVoice, handleCancelAudio, canTextToSpeechMap,
+  handleSetLanguage, currentLanguage, voices, voiceName, handleOnSetVoice, handleCancelAudio, canTextToSpeechMap,
   languages,
 }) {
   const handleVoiceSelection = (voiceSynth, index) => {
@@ -49,14 +49,14 @@ function Navbar({
               <LanguagesDropDown
                 languages={languages}
                 handleSetLanguage={handleSetLanguage}
-                lang={lang}
+                currentLanguage={currentLanguage}
                 canTextToSpeechMap={canTextToSpeechMap}
               />
             </div>
             <RefreshButton />
             <div className="absolute right-3 md:right-6 xl:inset-x-0 xl:left-32 bottom-3">
               <VoicesDropDown
-                lang={lang}
+                currentLanguage={currentLanguage}
                 currentVoiceName={voiceName}
                 voices={voices}
                 handleOnSetVoice={handleVoiceSelection}

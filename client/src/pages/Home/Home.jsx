@@ -173,7 +173,7 @@ function Home() {
   return (
     <div className="App">
       <InfiniteScroll dataLength={displayData?.length || 0} next={fetchMoreData} hasMore>
-        <Navbar languages={languages} canTextToSpeechMap={canTextToSpeechMap} handleSetLanguage={handleSetLanguage} lang={currentLanguage} voiceName={currentVoice?.name} voices={voices} handleOnSetVoice={handleOnSetVoice} handleCancelAudio={handleCancelAudio} />
+        <Navbar languages={languages} canTextToSpeechMap={canTextToSpeechMap} handleSetLanguage={handleSetLanguage} currentLanguage={currentLanguage} voiceName={currentVoice?.name} voices={voices} handleOnSetVoice={handleOnSetVoice} handleCancelAudio={handleCancelAudio} />
         <h1 className="hidden pt-6 text-2xl text-center text-white -pb-4 fade-in md:block md:text-7xl" style={{ fontFamily: 'yellowtail' }}>Astronomy Love</h1>
         <div className="grid min-h-screen mb-6 fade-in max-w-screen place-items-center">
           {displayData?.map((entry) => (

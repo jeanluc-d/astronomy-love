@@ -3,21 +3,21 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 
 function VoicesDropDown({
-  lang, voices, handleOnSetVoice, currentVoiceName, handleCancelAudio,
+  currentLanguage, voices, handleOnSetVoice, currentVoiceName, handleCancelAudio,
 }) {
   const [availableVoices, setAvailableVoices] = useState(null);
   useEffect(() => {
     if (voices) {
       const voiceArray = [];
-      voices?.forEach((v, index) => {
-        const voiceLanguage = `${v.lang[0]}${v.lang[1]}`;
-        if (voiceLanguage === lang) {
-          voiceArray.push({ voice: v, index });
+      voices?.forEach((voice, index) => {
+        const voiceLanguage = `${voice.lang[0]}${voice.lang[1]}`;
+        if (voiceLanguage === currentLanguage) {
+          voiceArray.push({ voice, index });
         }
       });
       setAvailableVoices(voiceArray);
     }
-  }, [lang, voices]);
+  }, [currentLanguage, voices]);
 
   const handleVoiceSelection = (voiceSynth, index) => {
     handleCancelAudio();

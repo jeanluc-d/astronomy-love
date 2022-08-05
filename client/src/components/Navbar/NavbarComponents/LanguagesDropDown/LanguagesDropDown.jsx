@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 
 function LanguagesDropDown({
-  handleSetLanguage, lang, canTextToSpeechMap, languages,
+  handleSetLanguage, currentLanguage, canTextToSpeechMap, languages,
 }) {
   return (
     <Menu as="div" className="inline-block w-20 text-left max-h-32 fade-in ">
@@ -30,7 +30,7 @@ function LanguagesDropDown({
                     type="button"
                     onClick={() => handleSetLanguage(language.code, index)}
                     href="#"
-                    className={`${active ? 'bg-gray-700 ' : null} flex items-center px-4 py-2 truncate  text-white text-sm w-full ${language.code === lang && 'bg-gray-900'}`}
+                    className={`${active ? 'bg-gray-700 ' : null} flex items-center px-4 py-2 truncate  text-white text-sm w-full ${language.code === currentLanguage && 'bg-gray-900'}`}
                   >
                     {language.name}
                     {canTextToSpeechMap.get(language.code) && (
