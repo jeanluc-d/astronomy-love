@@ -6,7 +6,7 @@ function LanguagesDropDown({
   handleSetLanguage, currentLanguage, canTextToSpeechMap, languages,
 }) {
   return (
-    <Menu as="div" className="inline-block w-20 text-left max-h-32 fade-in ">
+    <Menu as="div" test-id="langauges-drop-down" className="inline-block w-20 text-left max-h-32 fade-in ">
       <div>
         <Menu.Button className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-black border border-gray-300 rounded-md shadow-sm xl:px-2 2xl:px-4 hover:bg-gray-900">
           Language

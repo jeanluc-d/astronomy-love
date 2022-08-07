@@ -7,7 +7,7 @@ import useSWRImmutable from 'swr/immutable';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { animateScroll as scroll } from 'react-scroll';
 import {
-  formatDate, myScrollFunc, getCurrentVoice, blastOff, createCanTextToSpeechMap,
+  formatDate, myScrollFunc, getCurrentVoice, blastOff, createCanTextToSpeechMap, fetchAvailableLanguages,
 } from 'utils';
 import EasySpeech from 'easy-speech';
 import initSpeech from 'speech';
@@ -121,13 +121,25 @@ function Home() {
   // on language change it will update the language of the text to speech - if it's available
   useEffect(() => {
     const updatedVoice = getCurrentVoice(currentLanguage, voices);
-    setCurrentVoice(updatedVoice);
+    // if the voice is found set it
+    if (updatedVoice) {
+      // if the voice is inside local storage then use that
+      const indexVoiceFromStorage = localStorage.getItem('astroVoice');
+      if (indexVoiceFromStorage > 0) {
+        setCurrentVoice(voices[indexVoiceFromStorage]);
+        return;
+        // else set the voice to the first voice of that language
+      }
+      setCurrentVoice(updatedVoice);
+      return;
+    }
+    setCurrentVoice(null);
   }, [currentLanguage, voices]);
 
   // on start up get the languages / init speech / add scroll to top listener
   useEffect(() => {
     const languageInitialization = async () => {
-      const langArray = await fetcher(`${process.env.REACT_APP_ENDPOINT}/languages`);
+      const langArray = await fetchAvailableLanguages(`${process.env.REACT_APP_ENDPOINT}/languages`);
       setLanguages(langArray);
       const indexOfLanguageStored = localStorage.getItem('astroLanguage');
       // check local storage for a saved language (it is an index of the languages array)
@@ -139,6 +151,7 @@ function Home() {
 
     const voicesInitialization = async () => {
       const synthesisedVoiceArray = await initSpeech();
+      console.log(synthesisedVoiceArray);
       setVoices(synthesisedVoiceArray);
       // if there is a saved voice in local storage, use that
       const indexVoiceFromStorage = localStorage.getItem('astroVoice');

@@ -19,15 +19,15 @@ function PictureOfTheDay({
       return;
     }
     const formatedDate = formatDate(new Date(entry.date));
-    const data = await poster(`${process.env.REACT_APP_ENDPOINT}/translations`, {
+    const translatedEntry = await poster(`${process.env.REACT_APP_ENDPOINT}/translations`, {
       title: `${entry.title}.`, desc: `${entry.explanation}`, to: currentLanguage, date: formatedDate,
     }, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    setTitle(data.title);
-    setExplanation(data.desc);
+    setTitle(translatedEntry.title);
+    setExplanation(translatedEntry.desc);
     setDate(translateDate(entry.date, currentLanguage));
   }, [entry, currentLanguage, setTitle, setExplanation, setDate]);
 
