@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
@@ -18,5 +19,5 @@ app.get('/languages', languagesRoute);
 app.post('/translations', translationsRoute);
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

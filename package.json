@@ -10,6 +10,9 @@
   "type": "module",
   "description": "",
   "eslintIgnore": [
+    "node_modules",
+    "dist",
+    "./server/*/*.js",
     "*.test.js",
     "*.test.jsx"
   ],
@@ -17,6 +20,7 @@
   "scripts": {
     "start": "node server/server.js",
     "test": "jest",
+    "lint": "eslint .",
     "build": "parcel build ./client/public/index.html --public-url ./",
     "dev-server": "nodemon server/server.js",
     "dev-client": "parcel ./client/public/index.html -p 3000"

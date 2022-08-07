@@ -2,7 +2,7 @@ const utils = require("./utils")
 
 
 const fetcher = require("../api/fetcher")
-jest.mock("../../api/fetcher")
+jest.mock("../api/fetcher")
 describe("utils.translateDate", () => {
     test("translateDate-en", () => {
         let result = utils.translateDate("2022-08-05", "en")
