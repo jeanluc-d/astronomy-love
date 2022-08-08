@@ -63,7 +63,7 @@ function PictureOfTheDay({
           )}
         <div className="grid px-4 py-4 md:px-6">
           <div className="flex items-center mb-2 ">
-            <h1 className={`${largeFont ? 'text-2xl' : 'text-xl'} flex-1  font-bold capitalize leading-8 `}>{title}</h1>
+            <h1 className={`${largeFont ? 'text-3xl' : 'text-xl'} flex-1  font-bold capitalize leading-8 `}>{title}</h1>
             <button type="button" onClick={() => setTextSize()} className="items-center hover:text-gray-700 ">
               <svg className="h-6 pl-5" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 8L4 6L16 6V8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
@@ -90,7 +90,7 @@ function PictureOfTheDay({
               </>
             )}
           </div>
-          <span className={`${largeFont ? 'text-lg' : 'text-2xl'} inline-block mb-2 text-sm font-semibold text-gray-700 capitalize rounded-full`}>{date}</span>
+          <span className={`${largeFont ? 'text-2xl' : 'text-lg'} inline-block mb-2 font-semibold text-gray-700 capitalize rounded-full`}>{date}</span>
           <p className={`${largeFont ? 'text-2xl' : 'text-lg'} text-gray-900`}>{explanation}</p>
         </div>
         <div className="flex pb-2 ml-4 md:ml-6">
