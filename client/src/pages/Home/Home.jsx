@@ -13,6 +13,7 @@ import EasySpeech from 'easy-speech';
 import initSpeech from 'speech';
 import { SECONDS_IN_A_DAY, MAX_CHAR_LENGTH } from 'constants';
 import fetcher from 'fetcher';
+import useLocalStorageState from 'useLocalStorageState';
 import {
   PictureOfTheDay, Navbar, RocketMan, SpaceShip,
 } from 'components';
@@ -26,13 +27,14 @@ function Home() {
   // these will vary by the users browser
   const [voices, setVoices] = useState([]);
   const [currentVoice, setCurrentVoice] = useState();
+  const [currentVoiceIndex, setCurrentVoiceIndex] = useLocalStorageState('astroVoice', -1);
   // used to show which languages are supported
   const [canTextToSpeechMap, setCanTextToSpeechMap] = useState();
 
   // these come from libre translation language endpoint
   const [languages, setLanguages] = useState();
   const [currentLanguage, setCurrentLanguage] = useState('en');
-
+  const [currentLanguageIndex, setCurrentLanguageIndex] = useLocalStorageState('astroLanguage', -1);
   /**
    * our end date is initially the current date
    * start date is initally yesterday
@@ -46,6 +48,7 @@ function Home() {
   */
   const { data, error } = useSWRImmutable(`${process.env.REACT_APP_ENDPOINT}/pictures?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`, fetcher);
   const [displayData, setDisplayData] = useState(data);
+
   /**
    * used with SWR and React Infinite Scroll to load more data
    * the range of the date gets backed by 2 days
@@ -85,14 +88,14 @@ function Home() {
 
   const handleSetLanguage = (newLanguage, i) => {
     // put language index in local storage
-    localStorage.setItem('astroLanguage', i);
+    setCurrentLanguageIndex(i);
     // voice will set itself once the language is set
-    localStorage.setItem('astroVoice', '');
+    setCurrentVoiceIndex(-1);
     setCurrentLanguage(newLanguage);
     handleCancelAudio();
   };
   const handleOnSetVoice = (newVoice, i) => {
-    localStorage.setItem('astroVoice', i);
+    setCurrentVoiceIndex(i);
     setCurrentVoice(newVoice);
   };
 
@@ -124,9 +127,8 @@ function Home() {
     // if the voice is found set it
     if (updatedVoice) {
       // if the voice is inside local storage then use that
-      const indexVoiceFromStorage = localStorage.getItem('astroVoice');
-      if (indexVoiceFromStorage > 0) {
-        setCurrentVoice(voices[indexVoiceFromStorage]);
+      if (currentVoiceIndex > 0) {
+        setCurrentVoice(voices[currentVoiceIndex]);
         return;
         // else set the voice to the first voice of that language
       }
@@ -141,10 +143,9 @@ function Home() {
     const languageInitialization = async () => {
       const langArray = await fetchAvailableLanguages(`${process.env.REACT_APP_ENDPOINT}/languages`);
       setLanguages(langArray);
-      const indexOfLanguageStored = localStorage.getItem('astroLanguage');
       // check local storage for a saved language (it is an index of the languages array)
-      if (indexOfLanguageStored) {
-        const langFromStorage = langArray[indexOfLanguageStored].code;
+      if (currentLanguageIndex) {
+        const langFromStorage = langArray[currentLanguageIndex].code;
         setCurrentLanguage(langFromStorage);
       }
     };
@@ -154,9 +155,8 @@ function Home() {
       console.log(synthesisedVoiceArray);
       setVoices(synthesisedVoiceArray);
       // if there is a saved voice in local storage, use that
-      const indexVoiceFromStorage = localStorage.getItem('astroVoice');
-      if (indexVoiceFromStorage) {
-        setCurrentVoice(synthesisedVoiceArray[indexVoiceFromStorage]);
+      if (currentVoiceIndex > 0) {
+        setCurrentVoice(synthesisedVoiceArray[currentVoiceIndex]);
       }
       // this will be used in the language dropdown to indicate which languages are voice supported
       const map = createCanTextToSpeechMap(synthesisedVoiceArray);

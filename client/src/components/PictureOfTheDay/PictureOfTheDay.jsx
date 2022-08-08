@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   addDefaultSrc, formatDate, translateDate,
 } from 'utils';
+import useLocalStorageState from 'useLocalStorageState';
 import poster from 'poster';
 
 function PictureOfTheDay({
@@ -10,7 +11,7 @@ function PictureOfTheDay({
   const [title, setTitle] = useState(entry.title);
   const [explanation, setExplanation] = useState(entry.explanation);
   const [date, setDate] = useState(translateDate(entry.date, currentLanguage));
-  const [largeFont, setLargeFont] = useState(false);
+  const [largeFont, setLargeFont] = useLocalStorageState('astroLargeFont', false);
   const translateText = useCallback(async () => {
     if (currentLanguage === 'en') {
       setTitle(entry.title);
@@ -36,16 +37,8 @@ function PictureOfTheDay({
   }, [currentLanguage, translateText]);
 
   const setTextSize = () => {
-    localStorage.setItem('astroLargeFont', !largeFont);
     setLargeFont(!largeFont);
   };
-
-  useEffect(() => {
-    if (localStorage.astroLargeFont === 'true') {
-      setLargeFont(true);
-    }
-  }, []);
-
   return (
     <div className="max-w-4xl bg-gray-200 rounded-md shadowLg">
       <div className="max-w-screen">
@@ -97,7 +90,7 @@ function PictureOfTheDay({
               </>
             )}
           </div>
-          <span className={`${largeFont ? 'text-2xl' : 'text-lg'} inline-block mb-2 text-sm font-semibold text-gray-700 capitalize rounded-full`}>{date}</span>
+          <span className={`${largeFont ? 'text-lg' : 'text-2xl'} inline-block mb-2 text-sm font-semibold text-gray-700 capitalize rounded-full`}>{date}</span>
           <p className={`${largeFont ? 'text-2xl' : 'text-lg'} text-gray-900`}>{explanation}</p>
         </div>
         <div className="flex pb-2 ml-4 md:ml-6">
