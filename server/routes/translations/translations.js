@@ -52,7 +52,7 @@ router.post('/translations', async (req, res) => {
       }
     }
     // if not french or limit exceeded then use libre translate
-    const libreTranslate = await fetch('https://libretranslate.com/translate', {
+    const libreTranslate = await fetch(`${process.env.LIBRE_ENDPOINT}/translate`, {
       method: 'POST',
       body: JSON.stringify({
         q: `${title}. ${desc}`,

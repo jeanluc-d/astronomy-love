@@ -18,7 +18,7 @@ router.get('/languages', async (req, res) => {
       return;
     }
     // if not cached, request, process, and then cache
-    const languages = await fetch(`${process.env.LIBRE_END_POINT}`, {
+    const languages = await fetch(`${process.env.LIBRE_ENDPOINT}/languages`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
