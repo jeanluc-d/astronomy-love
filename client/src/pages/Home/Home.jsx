@@ -46,7 +46,7 @@ function Home() {
    * data is the most recent array of pictures sent from the api
    * displayData is all the pictures received from the api
   */
-  const { data, error } = useSWRImmutable(`${process.env.REACT_APP_ENDPOINT}/pictures?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`, fetcher);
+  const { data, error } = useSWRImmutable(`${process.env.REACT_APP_ENDPOINT}pictures?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`, fetcher);
   const [displayData, setDisplayData] = useState(data);
 
   /**
@@ -141,7 +141,7 @@ function Home() {
   // on start up get the languages / init speech / add scroll to top listener
   useEffect(() => {
     const languageInitialization = async () => {
-      const langArray = await fetchAvailableLanguages(`${process.env.REACT_APP_ENDPOINT}/languages`);
+      const langArray = await fetchAvailableLanguages(`${process.env.REACT_APP_ENDPOINT}languages`);
       setLanguages(langArray);
       // check local storage for a saved language (it is an index of the languages array)
       if (currentLanguageIndex) {
