@@ -86,16 +86,16 @@ function Home() {
     EasySpeech.cancel();
   };
 
-  const handleSetLanguage = (newLanguage, i) => {
+  const handleSetLanguage = (newLanguage, index) => {
     // put language index in local storage
-    setCurrentLanguageIndex(i);
+    setCurrentLanguageIndex(index);
     // voice will set itself once the language is set
     setCurrentVoiceIndex(-1);
     setCurrentLanguage(newLanguage);
     handleCancelAudio();
   };
-  const handleOnSetVoice = (newVoice, i) => {
-    setCurrentVoiceIndex(i);
+  const handleOnSetVoice = (newVoice, index) => {
+    setCurrentVoiceIndex(index);
     setCurrentVoice(newVoice);
   };
 
