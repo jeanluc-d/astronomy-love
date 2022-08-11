@@ -40,7 +40,7 @@ function PictureOfTheDay({
     setLargeFont(!largeFont);
   };
   return (
-    <div className="max-w-4xl bg-gray-200 rounded-md shadowLg">
+    <div className="max-w-3xl bg-gray-200 rounded-md shadowLg">
       <div className="max-w-screen">
         {entry.url.includes('youtube')
           ? (

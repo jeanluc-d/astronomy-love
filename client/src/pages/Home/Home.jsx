@@ -170,7 +170,6 @@ function Home() {
       window.removeEventListener('scroll', myScrollFunc);
     };
   }, []);
-  console.log('loading', loading);
   if (loading) {
     return (
       <RocketMan />
