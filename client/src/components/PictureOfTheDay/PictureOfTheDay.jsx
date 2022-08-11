@@ -65,7 +65,7 @@ function PictureOfTheDay({
           <div className="flex items-center mb-2 ">
             <h1 className={`${largeFont ? 'text-3xl' : 'text-xl'} flex-1  font-bold capitalize leading-8 `}>{title}</h1>
             <button type="button" onClick={() => setTextSize()} className="items-center hover:text-gray-700 ">
-              <svg className="h-6 pl-5" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg className="h-6 ml-5" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 8L4 6L16 6V8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M10 6L10 18M10 18H12M10 18H8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M14 13.5L14 12L20 12V13.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
