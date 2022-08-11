@@ -21,7 +21,7 @@
     "start": "node server/server.js",
     "test": "jest",
     "lint": "eslint .",
-    "build": "parcel build ./client/public/index.html --public-url ./",
+    "build": "parcel build ./client/public/index.html --public-url ./ && parcel build ./client/public/404.html",
     "dev-server": "nodemon server/server.js",
     "dev-client": "parcel ./client/public/index.html -p 3000"
   },

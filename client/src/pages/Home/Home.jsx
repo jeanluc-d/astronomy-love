@@ -118,7 +118,6 @@ function Home() {
         setDisplayData([...data]);
       }
     }
-    if (loading) setLoading(false);
   }, [data]);
 
   // on language change it will update the language of the text to speech - if it's available
@@ -171,7 +170,7 @@ function Home() {
       window.removeEventListener('scroll', myScrollFunc);
     };
   }, []);
-
+  console.log('loading', loading);
   if (loading) {
     return (
       <RocketMan />

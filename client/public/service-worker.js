@@ -1,6 +1,6 @@
 /* eslint-disable implicit-arrow-linebreak */
 const CACHE_NAME = 'cache-v1';
-const urlsToCache = ['index.html', 'offline.html'];
+const urlsToCache = ['index.html', '404.html'];
 const self = this;
 // install service worker
 self.addEventListener('install', (event) => {
@@ -27,17 +27,17 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// activate service worker
-self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
-  event.waitUntil(
-    caches.keys().then((cacheNames) => Promise.all(
-      // eslint-disable-next-line consistent-return
-      cacheNames.forEach((cacheName) => {
-        if (cacheWhitelist.indexOf(cacheName) === -1) {
-          return caches.delete(cacheName);
-        }
-      }),
-    )),
-  );
-});
+// // activate service worker
+// self.addEventListener('activate', (event) => {
+//   const cacheWhitelist = [CACHE_NAME];
+//   event.waitUntil(
+//     caches.keys().then((cacheNames) => Promise?.all(
+//       // eslint-disable-next-line consistent-return
+//       cacheNames.forEach((cacheName) => {
+//         if (cacheWhitelist.indexOf(cacheName) === -1) {
+//           return caches.delete(cacheName);
+//         }
+//       }),
+//     )),
+//   );
+// });
