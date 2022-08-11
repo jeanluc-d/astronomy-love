@@ -26,18 +26,3 @@ self.addEventListener('fetch', (event) => {
         caches.match('offline.html')),
   );
 });
-
-// // activate service worker
-// self.addEventListener('activate', (event) => {
-//   const cacheWhitelist = [CACHE_NAME];
-//   event.waitUntil(
-//     caches.keys().then((cacheNames) => Promise?.all(
-//       // eslint-disable-next-line consistent-return
-//       cacheNames.forEach((cacheName) => {
-//         if (cacheWhitelist.indexOf(cacheName) === -1) {
-//           return caches.delete(cacheName);
-//         }
-//       }),
-//     )),
-//   );
-// });
