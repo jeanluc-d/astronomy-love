@@ -152,7 +152,6 @@ function Home() {
 
     const voicesInitialization = async () => {
       const synthesisedVoiceArray = await initSpeech();
-      console.log(synthesisedVoiceArray);
       setVoices(synthesisedVoiceArray);
       // if there is a saved voice in local storage, use that
       if (currentVoiceIndex > 0) {
