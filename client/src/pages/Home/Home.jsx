@@ -203,7 +203,7 @@ function Home() {
           ))}
         </div>
       </InfiniteScroll>
-      <button type="button" onClick={handleBlastOff} id="item" className="px-4 py-4 text-white item">
+      <button type="button" onClick={handleBlastOff} id="item" className="btn px-4 py-4 text-white item ring-0 focus:ring-0">
         <SpaceShip />
       </button>
     </div>
