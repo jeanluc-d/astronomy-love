@@ -143,9 +143,13 @@ function Home() {
       const langArray = await fetchAvailableLanguages(`${process.env.REACT_APP_ENDPOINT}languages`);
       setLanguages(langArray);
       // check local storage for a saved language (it is an index of the languages array)
-      if (currentLanguageIndex) {
-        const langFromStorage = langArray[currentLanguageIndex].code;
-        setCurrentLanguage(langFromStorage);
+      if (currentLanguageIndex > 0) {
+        try {
+          const langFromStorage = langArray[currentLanguageIndex].code;
+          setCurrentLanguage(langFromStorage);
+        } catch (e) {
+          setCurrentLanguage('en');
+        }
       }
     };
 
