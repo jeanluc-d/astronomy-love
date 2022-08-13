@@ -7,7 +7,7 @@ import useSWRImmutable from 'swr/immutable';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { animateScroll as scroll } from 'react-scroll';
 import {
-  formatDate, myScrollFunc, getCurrentVoice, blastOff, createCanTextToSpeechMap, fetchAvailableLanguages,
+  formatDate, myScrollFunc, getCurrentVoice, blastOff, createCanTextToSpeechMap, fetchAvailableLanguages, formatStartDate,
 } from 'utils';
 import EasySpeech from 'easy-speech';
 import initSpeech from 'speech';
@@ -40,7 +40,7 @@ function Home() {
    * start date is initally yesterday
   */
   const [endDate, setEndDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date(endDate - (SECONDS_IN_A_DAY * 2)));
+  const [startDate, setStartDate] = useState(new Date(endDate - (SECONDS_IN_A_DAY)));
 
   /**
    * data is the most recent array of pictures sent from the api

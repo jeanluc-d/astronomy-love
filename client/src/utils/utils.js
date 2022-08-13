@@ -7,7 +7,31 @@ export const addDefaultSrc = (ev) => {
   ev.target.alt = 'Image Could Not Be Loaded';
 };
 
-export const formatDate = (date) => date?.toISOString()?.split('T')[0];
+export const toEasternTimeZone = (date) => date.toLocaleString('en-US', {
+  timeZone: 'America/New_York',
+  hour12: false,
+});
+
+export const formatStartDate = (date) => {
+  const fullEasternTime = toEasternTimeZone(date);
+  const split = fullEasternTime.split(',');
+  const monthDayYear = split[0];
+  const parts = monthDayYear.split('/');
+  const rearrangedDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
+  return rearrangedDate;
+};
+
+export const formatDate = (date) => {
+  const today = new Date();
+  if (date === today) {
+    /**
+      * have to set to eastern time zone to match NASA's APOD API
+      * or the date may be off by one day depending on the clients timezone
+      */
+    return formatStartDate(date);
+  }
+  return date?.toISOString()?.split('T')[0];
+};
 
 export const translateDate = (date, lang) => new Date(date.replace(/-/g, '/')).toLocaleDateString(lang, FORMAT_OPTIONS);
 
