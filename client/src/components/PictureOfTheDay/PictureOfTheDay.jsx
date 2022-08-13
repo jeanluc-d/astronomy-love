@@ -6,12 +6,11 @@ import useLocalStorageState from 'useLocalStorageState';
 import poster from 'poster';
 
 function PictureOfTheDay({
-  entry, currentLanguage, handlePlayAudio, handleCancelAudio, canTTS,
+  entry, currentLanguage, handlePlayAudio, handleCancelAudio, canTTS, handleToggleTextSize, largeFont,
 }) {
   const [title, setTitle] = useState(entry.title);
   const [explanation, setExplanation] = useState(entry.explanation);
   const [date, setDate] = useState(translateDate(entry.date, currentLanguage));
-  const [largeFont, setLargeFont] = useLocalStorageState('astroLargeFont', false);
   const translateText = useCallback(async () => {
     if (currentLanguage === 'en') {
       setTitle(entry.title);
@@ -36,9 +35,6 @@ function PictureOfTheDay({
     translateText();
   }, [currentLanguage, translateText]);
 
-  const setTextSize = () => {
-    setLargeFont(!largeFont);
-  };
   return (
     <div className="max-w-3xl bg-gray-200 rounded-md shadowLg">
       <div className="max-w-screen">
@@ -64,7 +60,7 @@ function PictureOfTheDay({
         <div className="grid px-4 py-4 md:px-6">
           <div className="flex items-center mb-2">
             <h1 className={`${largeFont ? 'text-3xl' : 'text-xl'} flex-1  font-bold capitalize leading-8 mr-3`}>{title}</h1>
-            <button type="button" onClick={() => setTextSize()} className="items-center hover:text-gray-700 ">
+            <button type="button" onClick={() => handleToggleTextSize()} className="items-center hover:text-gray-700 ">
               <svg className="h-6" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 8L4 6L16 6V8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M10 6L10 18M10 18H12M10 18H8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />

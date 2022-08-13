@@ -7,7 +7,7 @@ import useSWRImmutable from 'swr/immutable';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { animateScroll as scroll } from 'react-scroll';
 import {
-  formatDate, myScrollFunc, getCurrentVoice, blastOff, createCanTextToSpeechMap, fetchAvailableLanguages, formatStartDate,
+  formatDate, myScrollFunc, getCurrentVoice, blastOff, createCanTextToSpeechMap, fetchAvailableLanguages,
 } from 'utils';
 import EasySpeech from 'easy-speech';
 import initSpeech from 'speech';
@@ -41,7 +41,7 @@ function Home() {
   */
   const [endDate, setEndDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date(endDate - (SECONDS_IN_A_DAY)));
-
+  const [largeFont, setLargeFont] = useLocalStorageState('astroLargeFont', false);
   /**
    * data is the most recent array of pictures sent from the api
    * displayData is all the pictures received from the api
@@ -80,6 +80,10 @@ function Home() {
       rate: 1,
       error: (e) => console.log(e),
     });
+  };
+
+  const handleToggleTextSize = () => {
+    setLargeFont(!largeFont);
   };
 
   const handleCancelAudio = () => {
@@ -202,6 +206,8 @@ function Home() {
                 handlePlayAudio={handlePlayAudio}
                 handleCancelAudio={handleCancelAudio}
                 canTTS={currentVoice}
+                handleToggleTextSize={handleToggleTextSize}
+                largeFont={largeFont}
               />
             </div>
           ))}
