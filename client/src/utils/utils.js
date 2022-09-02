@@ -1,5 +1,5 @@
 import fetcher from '../api/fetcher';
-import { FORMAT_OPTIONS } from '../constants/constants';
+import { FORMAT_OPTIONS, MS_PER_DAY } from '../constants/constants';
 
 export const addDefaultSrc = (ev) => {
   /* eslint-disable no-param-reassign */
@@ -7,31 +7,7 @@ export const addDefaultSrc = (ev) => {
   ev.target.alt = 'Image Could Not Be Loaded';
 };
 
-export const toEasternTimeZone = (date) => date.toLocaleString('en-US', {
-  timeZone: 'America/New_York',
-  hour12: false,
-});
-
-export const formatStartDate = (date) => {
-  const fullEasternTime = toEasternTimeZone(date);
-  const split = fullEasternTime.split(',');
-  const monthDayYear = split[0];
-  const parts = monthDayYear.split('/');
-  const rearrangedDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
-  return rearrangedDate;
-};
-
-export const formatDate = (date) => {
-  const today = new Date();
-  if (date === today) {
-    /**
-      * have to set to eastern time zone to match NASA's APOD API
-      * or the date may be off by one day depending on the clients timezone
-      */
-    return formatStartDate(date);
-  }
-  return date?.toISOString()?.split('T')[0];
-};
+export const formatDate = (date) => date?.toISOString()?.split('T')[0];
 
 export const translateDate = (date, lang) => new Date(date.replace(/-/g, '/')).toLocaleDateString(lang, FORMAT_OPTIONS);
 
@@ -84,4 +60,14 @@ export const myScrollFunc = () => {
     rocketShip.style.display = 'none';
     rocketShip.style.bottom = '2%';
   }
+};
+
+export const dateDifferenceInDays = (startDate, endDate) => {
+  // convert "YYYY-MM-DD" to "YYYY/MM/DD" and create a date object
+  const start = new Date(startDate.replace(/-/g, '/'));
+  const end = new Date(endDate.replace(/-/g, '/'));
+  // calculate difference in milliseconds
+  const diff = end - start;
+  // convert to days, rounding down to nearest integer so we don't get partial days
+  return Math.floor(diff / MS_PER_DAY);
 };

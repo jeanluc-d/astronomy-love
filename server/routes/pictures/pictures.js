@@ -1,6 +1,8 @@
+/* eslint-disable import/extensions */
 import express from 'express';
 import NodeCache from 'node-cache';
 import fetch from 'node-fetch';
+import { numberOfDaysInBetweenDates } from '../../utils/utils.js';
 
 const router = express.Router();
 
@@ -34,10 +36,13 @@ router.get('/pictures', async (req, res) => {
       headers: { 'Content-Type': 'application/json' },
     });
     const data = await apiResponse.json();
+
     // need to reverse the data since the API returns the oldest date first
     const pictures = data.reverse();
-
-    cache.set(cacheKey, pictures, 1000 * 60 * 60 * 24);
+    const numberOfDaysInBetweenDate = numberOfDaysInBetweenDates(startDate, endDate);
+    if (numberOfDaysInBetweenDate === data.length) {
+      cache.set(cacheKey, pictures, 1000 * 60 * 60 * 24);
+    }
     res.status(200).json(pictures);
   } catch (err) {
     res.status(500).json({ message: err.message });

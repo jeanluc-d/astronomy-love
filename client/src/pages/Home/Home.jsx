@@ -11,7 +11,7 @@ import {
 } from 'utils';
 import EasySpeech from 'easy-speech';
 import initSpeech from 'speech';
-import { SECONDS_IN_A_DAY, MAX_CHAR_LENGTH } from 'constants';
+import { MS_PER_DAY, MAX_CHAR_LENGTH } from 'constants';
 import fetcher from 'fetcher';
 import useLocalStorageState from 'useLocalStorageState';
 import {
@@ -40,7 +40,7 @@ function Home() {
    * start date is initally yesterday
   */
   const [endDate, setEndDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date(endDate - (SECONDS_IN_A_DAY)));
+  const [startDate, setStartDate] = useState(new Date(endDate - (MS_PER_DAY)));
   const [largeFont, setLargeFont] = useLocalStorageState('astroLargeFont', false);
   /**
    * data is the most recent array of pictures sent from the api
@@ -55,8 +55,8 @@ function Home() {
   */
   const fetchMoreData = () => {
     // move the date range back by 2 days
-    const start = startDate - (SECONDS_IN_A_DAY);
-    const end = startDate - (SECONDS_IN_A_DAY * 2);
+    const start = startDate - (MS_PER_DAY);
+    const end = startDate - (MS_PER_DAY * 2);
     setEndDate(new Date(start));
     setStartDate(new Date(end));
   };

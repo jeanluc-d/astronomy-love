@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   addDefaultSrc, formatDate, translateDate,
 } from 'utils';
-import useLocalStorageState from 'useLocalStorageState';
 import poster from 'poster';
 
 function PictureOfTheDay({
