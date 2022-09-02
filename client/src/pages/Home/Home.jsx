@@ -105,22 +105,21 @@ function Home() {
 
   // on data fetch
   useEffect(() => {
-    // check no error then
+    // check no error
+    if (error) return;
     if (data?.length > 0) {
-      // set loading to false since we have data
-      if (!error) {
-        /**
-         * add the new data to the display data
-         * ternary operator to check if the data is already in the display data
-         * if there is data, then spread it then add the new data
-        */
-        if (displayData) {
-          setDisplayData([...displayData, ...data]);
-          return;
-        }
-        if (loading) setLoading(false);
-        setDisplayData([...data]);
+      /**
+       * add the new data to the display data
+       * ternary operator to check if the data is already in the display data
+       * if there is data, then spread it then add the new data
+      */
+      if (displayData) {
+        setDisplayData([...displayData, ...data]);
+        return;
       }
+      // set loading to false since we have data
+      if (loading) setLoading(false);
+      setDisplayData(data);
     }
   }, [data]);
 
