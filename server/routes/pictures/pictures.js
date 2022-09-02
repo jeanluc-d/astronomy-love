@@ -3,6 +3,7 @@ import express from 'express';
 import NodeCache from 'node-cache';
 import fetch from 'node-fetch';
 import { numberOfDaysInBetweenDates } from '../../utils/utils.js';
+import MS_PER_DAY from '../../constants/constants.js';
 
 const router = express.Router();
 
@@ -41,7 +42,7 @@ router.get('/pictures', async (req, res) => {
     const pictures = data.reverse();
     const numberOfDaysInBetweenDate = numberOfDaysInBetweenDates(startDate, endDate);
     if (numberOfDaysInBetweenDate === data.length) {
-      cache.set(cacheKey, pictures, 1000 * 60 * 60 * 24);
+      cache.set(cacheKey, pictures, MS_PER_DAY);
     }
     res.status(200).json(pictures);
   } catch (err) {

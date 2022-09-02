@@ -1,6 +1,8 @@
+/* eslint-disable import/extensions */
 import express from 'express';
 import NodeCache from 'node-cache';
 import fetch from 'node-fetch';
+import MS_PER_DAY from '../../constants/constants.js';
 
 const router = express.Router();
 const cache = new NodeCache({ checkperiod: 0 });
@@ -37,7 +39,7 @@ router.get('/languages', async (req, res) => {
     // const organizedCodes = (['en', 'fr', ...codes.filter(l => l !== 'fr')])
     // const data = { names: organizedNames, codes: organizedCodes };
 
-    cache.set(cacheKey, libreTranslation, 1000 * 60 * 60 * 24);
+    cache.set(cacheKey, libreTranslation, MS_PER_DAY);
     res.status(200).json(libreTranslation);
   } catch (err) {
     console.error('error', err);
