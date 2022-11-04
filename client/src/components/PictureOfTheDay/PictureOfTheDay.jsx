@@ -8,12 +8,11 @@ import poster from 'poster';
 import useIsInViewport from 'hooks/useIsInViewport';
 
 function PictureOfTheDay({
-  entry, currentLanguage, handlePlayAudio, handleCancelAudio, canTTS,
+  entry, currentLanguage, handlePlayAudio, handleCancelAudio, canTTS, handleToggleTextSize, largeFont,
 }) {
   const [title, setTitle] = useState(entry.title);
   const [explanation, setExplanation] = useState(entry.explanation);
   const [date, setDate] = useState(translateDate(entry.date, currentLanguage));
-  const [largeFont, setLargeFont] = useState(false);
   const pictureRef = useRef(null);
   const isInViewport = useIsInViewport(pictureRef);
   const translateText = useCallback(async () => {
@@ -30,7 +29,7 @@ function PictureOfTheDay({
     if (!isInViewport) return;
 
     const formatedDate = formatDate(new Date(entry.date));
-    const translatedEntry = await poster(`${process.env.REACT_APP_ENDPOINT}/translations`, {
+    const translatedEntry = await poster(`${process.env.REACT_APP_ENDPOINT}translations`, {
       title: `${entry.title}.`, desc: `${entry.explanation}`, to: currentLanguage, date: formatedDate,
     }, {
       headers: {
@@ -45,17 +44,6 @@ function PictureOfTheDay({
   useEffect(() => {
     translateText();
   }, [currentLanguage, translateText]);
-
-  const setTextSize = () => {
-    localStorage.setItem('astroLargeFont', !largeFont);
-    setLargeFont(!largeFont);
-  };
-
-  useEffect(() => {
-    if (localStorage.astroLargeFont === 'true') {
-      setLargeFont(true);
-    }
-  }, []);
 
   return (
     <div ref={pictureRef} className="max-w-4xl bg-gray-200 rounded-md shadowLg">
@@ -80,10 +68,10 @@ function PictureOfTheDay({
             />
           )}
         <div className="grid px-4 py-4 md:px-6">
-          <div className="flex items-center mb-2 ">
-            <h1 className={`${largeFont ? 'text-2xl' : 'text-xl'} flex-1  font-bold capitalize leading-8 `}>{title}</h1>
-            <button type="button" onClick={() => setTextSize()} className="items-center hover:text-gray-700 ">
-              <svg className="h-6 pl-5" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="flex items-center mb-2">
+            <h1 className={`${largeFont ? 'text-3xl' : 'text-xl'} flex-1  font-bold capitalize leading-8 mr-3`}>{title}</h1>
+            <button type="button" onClick={() => handleToggleTextSize()} className="items-center hover:text-gray-700 ">
+              <svg className="h-6" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 8L4 6L16 6V8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M10 6L10 18M10 18H12M10 18H8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M14 13.5L14 12L20 12V13.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
@@ -108,7 +96,7 @@ function PictureOfTheDay({
               </>
             )}
           </div>
-          <span className={`${largeFont ? 'text-2xl' : 'text-lg'} inline-block mb-2 text-sm font-semibold text-gray-700 capitalize rounded-full`}>{date}</span>
+          <span className={`${largeFont ? 'text-2xl' : 'text-lg'} inline-block mb-2 font-semibold text-gray-700 capitalize rounded-full`}>{date}</span>
           <p className={`${largeFont ? 'text-2xl' : 'text-lg'} text-gray-900`}>{explanation}</p>
         </div>
         <div className="flex pb-2 ml-4 md:ml-6">

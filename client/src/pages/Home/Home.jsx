@@ -11,8 +11,9 @@ import {
 } from 'utils';
 import EasySpeech from 'easy-speech';
 import initSpeech from 'speech';
-import { SECONDS_IN_A_DAY, MAX_CHAR_LENGTH } from 'constants';
+import { MS_PER_DAY, MAX_CHAR_LENGTH } from 'constants';
 import fetcher from 'fetcher';
+import useLocalStorageState from 'useLocalStorageState';
 import {
   PictureOfTheDay, Navbar, RocketMan, SpaceShip,
 } from 'components';
@@ -26,34 +27,36 @@ function Home() {
   // these will vary by the users browser
   const [voices, setVoices] = useState([]);
   const [currentVoice, setCurrentVoice] = useState();
+  const [currentVoiceIndex, setCurrentVoiceIndex] = useLocalStorageState('astroVoice', -1);
   // used to show which languages are supported
   const [canTextToSpeechMap, setCanTextToSpeechMap] = useState();
 
   // these come from libre translation language endpoint
   const [languages, setLanguages] = useState();
   const [currentLanguage, setCurrentLanguage] = useState('en');
-
+  const [currentLanguageIndex, setCurrentLanguageIndex] = useLocalStorageState('astroLanguage', -1);
   /**
    * our end date is initially the current date
    * start date is initally yesterday
   */
   const [endDate, setEndDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date(endDate - (SECONDS_IN_A_DAY * 2)));
-
+  const [startDate, setStartDate] = useState(new Date(endDate - (MS_PER_DAY)));
+  const [largeFont, setLargeFont] = useLocalStorageState('astroLargeFont', false);
   /**
    * data is the most recent array of pictures sent from the api
    * displayData is all the pictures received from the api
   */
-  const { data, error } = useSWRImmutable(`${process.env.REACT_APP_ENDPOINT}/pictures?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`, fetcher);
+  const { data, error } = useSWRImmutable(`${process.env.REACT_APP_ENDPOINT}pictures?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`, fetcher);
   const [displayData, setDisplayData] = useState(data);
+
   /**
    * used with SWR and React Infinite Scroll to load more data
    * the range of the date gets backed by 2 days
   */
   const fetchMoreData = () => {
     // move the date range back by 2 days
-    const start = startDate - (SECONDS_IN_A_DAY);
-    const end = startDate - (SECONDS_IN_A_DAY * 2);
+    const start = startDate - (MS_PER_DAY);
+    const end = startDate - (MS_PER_DAY * 2);
     setEndDate(new Date(start));
     setStartDate(new Date(end));
   };
@@ -79,43 +82,45 @@ function Home() {
     });
   };
 
+  const handleToggleTextSize = () => {
+    setLargeFont(!largeFont);
+  };
+
   const handleCancelAudio = () => {
     EasySpeech.cancel();
   };
 
-  const handleSetLanguage = (newLanguage, i) => {
+  const handleSetLanguage = (newLanguage, index) => {
     // put language index in local storage
-    localStorage.setItem('astroLanguage', i);
+    setCurrentLanguageIndex(index);
     // voice will set itself once the language is set
-    localStorage.setItem('astroVoice', '');
+    setCurrentVoiceIndex(-1);
     setCurrentLanguage(newLanguage);
     handleCancelAudio();
   };
-  const handleOnSetVoice = (newVoice, i) => {
-    localStorage.setItem('astroVoice', i);
+  const handleOnSetVoice = (newVoice, index) => {
+    setCurrentVoiceIndex(index);
     setCurrentVoice(newVoice);
   };
 
   // on data fetch
   useEffect(() => {
-    // check no error then
+    // check no error
+    if (error) return;
     if (data?.length > 0) {
-      // set loading to false since we have data
-      if (!error) {
-        /**
-         * add the new data to the display data
-         * ternary operator to check if the data is already in the display data
-         * if there is data, then spread it then add the new data
-        */
-        if (displayData) {
-          setDisplayData([...displayData, ...data]);
-          return;
-        }
-        if (loading) setLoading(false);
-        setDisplayData([...data]);
+      /**
+       * add the new data to the display data
+       * ternary operator to check if the data is already in the display data
+       * if there is data, then spread it then add the new data
+      */
+      if (displayData) {
+        setDisplayData([...displayData, ...data]);
+        return;
       }
+      // set loading to false since we have data
+      if (loading) setLoading(false);
+      setDisplayData(data);
     }
-    if (loading) setLoading(false);
   }, [data]);
 
   // on language change it will update the language of the text to speech - if it's available
@@ -124,9 +129,8 @@ function Home() {
     // if the voice is found set it
     if (updatedVoice) {
       // if the voice is inside local storage then use that
-      const indexVoiceFromStorage = localStorage.getItem('astroVoice');
-      if (indexVoiceFromStorage > 0) {
-        setCurrentVoice(voices[indexVoiceFromStorage]);
+      if (currentVoiceIndex > 0) {
+        setCurrentVoice(voices[currentVoiceIndex]);
         return;
         // else set the voice to the first voice of that language
       }
@@ -139,13 +143,16 @@ function Home() {
   // on start up get the languages / init speech / add scroll to top listener
   useEffect(() => {
     const languageInitialization = async () => {
-      const langArray = await fetchAvailableLanguages(`${process.env.REACT_APP_ENDPOINT}/languages`);
+      const langArray = await fetchAvailableLanguages(`${process.env.REACT_APP_ENDPOINT}languages`);
       setLanguages(langArray);
-      const indexOfLanguageStored = localStorage.getItem('astroLanguage');
       // check local storage for a saved language (it is an index of the languages array)
-      if (indexOfLanguageStored) {
-        const langFromStorage = langArray[indexOfLanguageStored].code;
-        setCurrentLanguage(langFromStorage);
+      if (currentLanguageIndex > 0) {
+        try {
+          const langFromStorage = langArray[currentLanguageIndex].code;
+          setCurrentLanguage(langFromStorage);
+        } catch (e) {
+          setCurrentLanguage('en');
+        }
       }
     };
 
@@ -153,9 +160,8 @@ function Home() {
       const synthesisedVoiceArray = await initSpeech();
       setVoices(synthesisedVoiceArray);
       // if there is a saved voice in local storage, use that
-      const indexVoiceFromStorage = localStorage.getItem('astroVoice');
-      if (indexVoiceFromStorage) {
-        setCurrentVoice(synthesisedVoiceArray[indexVoiceFromStorage]);
+      if (currentVoiceIndex > 0) {
+        setCurrentVoice(synthesisedVoiceArray[currentVoiceIndex]);
       }
       // this will be used in the language dropdown to indicate which languages are voice supported
       const map = createCanTextToSpeechMap(synthesisedVoiceArray);
@@ -171,7 +177,6 @@ function Home() {
       window.removeEventListener('scroll', myScrollFunc);
     };
   }, []);
-
   if (loading) {
     return (
       <RocketMan />
@@ -200,12 +205,14 @@ function Home() {
                 handlePlayAudio={handlePlayAudio}
                 handleCancelAudio={handleCancelAudio}
                 canTTS={currentVoice}
+                handleToggleTextSize={handleToggleTextSize}
+                largeFont={largeFont}
               />
             </div>
           ))}
         </div>
       </InfiniteScroll>
-      <button type="button" onClick={handleBlastOff} id="item" className="px-4 py-4 text-white item">
+      <button type="button" onClick={handleBlastOff} id="item" className="btn px-4 py-4 text-white item ring-0 focus:ring-0">
         <SpaceShip />
       </button>
     </div>

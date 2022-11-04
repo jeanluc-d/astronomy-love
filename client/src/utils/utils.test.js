@@ -56,7 +56,7 @@ describe("utils.addDefaultSrc", () => {
             utils.addDefaultSrc(undefined)
         }
 
-        expect(callFunction).toThrow("Cannot read properties of undefined (reading 'target')")
+        expect(callFunction).toThrow("Cannot read properties of undefined (reading 'target')" || "Cannot read property 'target' of undefined")
     })
 })
 

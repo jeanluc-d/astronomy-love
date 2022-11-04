@@ -243,3 +243,8 @@ html {
 .max-w-screen {
   max-width: 100vw;
 }
+
+.btn:focus {
+    outline: none !important;
+    outline-offset: none !important;
+}

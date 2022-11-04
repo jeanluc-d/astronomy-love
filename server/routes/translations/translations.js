@@ -1,7 +1,9 @@
+/* eslint-disable import/extensions */
 import express from 'express';
 import * as deepl from 'deepl-node';
 import NodeCache from 'node-cache';
 import fetch from 'node-fetch';
+import MS_PER_DAY from '../../constants/constants.js';
 
 const router = express.Router();
 const cache = new NodeCache({ checkperiod: 0 });
@@ -44,7 +46,7 @@ router.post('/translations', async (req, res) => {
 
         const data = { title: transTitle.text, desc: transDesc.text };
         // cache translation
-        cache.set(cacheKey, data, 1000 * 60 * 60 * 24);
+        cache.set(cacheKey, data, MS_PER_DAY);
 
         // send translation
         res.status(200).json(data);
@@ -52,7 +54,7 @@ router.post('/translations', async (req, res) => {
       }
     }
     // if not french or limit exceeded then use libre translate
-    const libreTranslate = await fetch('https://libretranslate.com/translate', {
+    const libreTranslate = await fetch(`${process.env.LIBRE_ENDPOINT}/translate`, {
       method: 'POST',
       body: JSON.stringify({
         q: `${title}. ${desc}`,

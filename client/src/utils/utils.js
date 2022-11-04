@@ -1,5 +1,5 @@
 import fetcher from '../api/fetcher';
-import { FORMAT_OPTIONS } from '../constants/constants';
+import { FORMAT_OPTIONS, MS_PER_DAY } from '../constants/constants';
 
 export const addDefaultSrc = (ev) => {
   /* eslint-disable no-param-reassign */
@@ -60,4 +60,14 @@ export const myScrollFunc = () => {
     rocketShip.style.display = 'none';
     rocketShip.style.bottom = '2%';
   }
+};
+
+export const dateDifferenceInDays = (startDate, endDate) => {
+  // convert "YYYY-MM-DD" to "YYYY/MM/DD" and create a date object
+  const start = new Date(startDate.replace(/-/g, '/'));
+  const end = new Date(endDate.replace(/-/g, '/'));
+  // calculate difference in milliseconds
+  const diff = end - start;
+  // convert to days, rounding down to nearest integer so we don't get partial days
+  return Math.floor(diff / MS_PER_DAY);
 };

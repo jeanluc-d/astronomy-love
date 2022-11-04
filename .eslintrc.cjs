@@ -37,6 +37,7 @@ module.exports = {
         ['fetcher', './client/src/api/fetcher'],
         ['speech', './client/src/speech/speech'],
         ['hooks', './client/src/hooks'],
+        ['useLocalStorageState', './client/src/hooks/useLocalStorageState/useLocalStorageState'],
       ],
     },
   },

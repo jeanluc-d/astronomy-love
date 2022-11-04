@@ -1,6 +1,9 @@
+/* eslint-disable import/extensions */
 import express from 'express';
-import needle from 'needle';
 import NodeCache from 'node-cache';
+import fetch from 'node-fetch';
+import { numberOfDaysInBetweenDates } from '../../utils/utils.js';
+import MS_PER_DAY from '../../constants/constants.js';
 
 const router = express.Router();
 
@@ -29,12 +32,18 @@ router.get('/pictures', async (req, res) => {
       return;
     }
 
-    const apiResponse = await needle('get', `${NASA_APOD_URL}?start_date=${startDate}&end_date=${endDate}&api_key=${NASA_API_KEY}`);
-    // need to reverse the data since the API returns the oldest date first
-    const pictures = apiResponse.body.reverse();
-    console.log('data', pictures);
+    const apiResponse = await fetch(`${NASA_APOD_URL}?start_date=${startDate}&end_date=${endDate}&api_key=${NASA_API_KEY}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await apiResponse.json();
 
-    cache.set(cacheKey, pictures, 1000 * 60 * 60 * 24);
+    // need to reverse the data since the API returns the oldest date first
+    const pictures = data.reverse();
+    const numberOfDaysInBetweenDate = numberOfDaysInBetweenDates(startDate, endDate);
+    if (numberOfDaysInBetweenDate === data.length) {
+      cache.set(cacheKey, pictures, MS_PER_DAY);
+    }
     res.status(200).json(pictures);
   } catch (err) {
     res.status(500).json({ message: err.message });
