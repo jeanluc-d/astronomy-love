@@ -84,6 +84,7 @@
     "speech": "./client/src/speech/speech",
     "poster": "./client/src/api/poster",
     "fetcher": "./client/src/api/fetcher",
-    "public": "./client/public"
+    "public": "./client/public",
+    "hooks": "./client/src/hooks"
   }
 }
