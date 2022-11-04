@@ -5,7 +5,7 @@ import {
   addDefaultSrc, formatDate, translateDate,
 } from 'utils';
 import poster from 'poster';
-import useIsInViewport from 'hooks/useIsInViewport';
+import useIsInViewport from 'hooks/useIsInViewport/useIsInViewport';
 
 function PictureOfTheDay({
   entry, currentLanguage, handlePlayAudio, handleCancelAudio, canTTS,
