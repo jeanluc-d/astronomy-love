@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, useRef,
+} from 'react';
 import {
   addDefaultSrc, formatDate, translateDate,
 } from 'utils';
 import poster from 'poster';
+import useIsInViewport from 'hooks/useIsInViewport';
 
 function PictureOfTheDay({
   entry, currentLanguage, handlePlayAudio, handleCancelAudio, canTTS,
@@ -11,6 +14,8 @@ function PictureOfTheDay({
   const [explanation, setExplanation] = useState(entry.explanation);
   const [date, setDate] = useState(translateDate(entry.date, currentLanguage));
   const [largeFont, setLargeFont] = useState(false);
+  const pictureRef = useRef(null);
+  const isInViewport = useIsInViewport(pictureRef);
   const translateText = useCallback(async () => {
     if (currentLanguage === 'en') {
       setTitle(entry.title);
@@ -18,6 +23,12 @@ function PictureOfTheDay({
       setDate(translateDate(entry.date, 'en'));
       return;
     }
+
+    /* do not translate if the picture is not being looked at
+    * this is to prevent unnecessary calls to the API and imporve performace
+    */
+    if (!isInViewport) return;
+
     const formatedDate = formatDate(new Date(entry.date));
     const translatedEntry = await poster(`${process.env.REACT_APP_ENDPOINT}/translations`, {
       title: `${entry.title}.`, desc: `${entry.explanation}`, to: currentLanguage, date: formatedDate,
@@ -29,7 +40,7 @@ function PictureOfTheDay({
     setTitle(translatedEntry.title);
     setExplanation(translatedEntry.desc);
     setDate(translateDate(entry.date, currentLanguage));
-  }, [entry, currentLanguage, setTitle, setExplanation, setDate]);
+  }, [entry, currentLanguage, setTitle, setExplanation, setDate, isInViewport]);
 
   useEffect(() => {
     translateText();
@@ -47,7 +58,7 @@ function PictureOfTheDay({
   }, []);
 
   return (
-    <div className="max-w-4xl bg-gray-200 rounded-md shadowLg">
+    <div ref={pictureRef} className="max-w-4xl bg-gray-200 rounded-md shadowLg">
       <div className="max-w-screen">
         {entry.url.includes('youtube')
           ? (
