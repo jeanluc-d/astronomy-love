@@ -16,11 +16,13 @@ function PictureOfTheDay({
   const [largeFont, setLargeFont] = useState(false);
   const pictureRef = useRef(null);
   const isInViewport = useIsInViewport(pictureRef);
+  const [translatedLanguage, setTranslatedLanguage] = useState('en');
   const translateText = useCallback(async () => {
     if (currentLanguage === 'en') {
       setTitle(entry.title);
       setExplanation(entry.explanation);
       setDate(translateDate(entry.date, 'en'));
+      setTranslatedLanguage('en');
       return;
     }
 
@@ -28,6 +30,8 @@ function PictureOfTheDay({
     * this is to prevent unnecessary calls to the API and imporve performace
     */
     if (!isInViewport) return;
+    // if it's already transalted then return
+    if (translatedLanguage === currentLanguage) return;
 
     const formatedDate = formatDate(new Date(entry.date));
     const translatedEntry = await poster(`${process.env.REACT_APP_ENDPOINT}translations`, {
@@ -40,6 +44,7 @@ function PictureOfTheDay({
     setTitle(translatedEntry.title);
     setExplanation(translatedEntry.desc);
     setDate(translateDate(entry.date, currentLanguage));
+    setTranslatedLanguage(currentLanguage);
   }, [entry, currentLanguage, setTitle, setExplanation, setDate, isInViewport]);
 
   useEffect(() => {
