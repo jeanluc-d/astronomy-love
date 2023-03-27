@@ -99,8 +99,8 @@ function PictureOfTheDay({
             </a>
           )}
           {entry.copyright && (
-            <span className="inline-block w-40 px-4 py-2 mr-2 text-sm font-semibold text-white bg-gray-400 rounded-md">
-              Copyright:
+            <span className="flex items-center w-40 px-4 py-2 mr-2 text-sm font-semibold text-white bg-gray-700 rounded-md">
+              <svg className="w-6 h-6 mr-2 text-white " strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM13.5 9.17a3 3 0 100 5.659" stroke="#FFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
               {entry.copyright}
             </span>
           )}
