@@ -21,7 +21,7 @@ function LanguagesDropDown({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute left-0 w-56 overflow-y-auto origin-top-left transform -translate-y-full bg-black divide-y rounded-md shadow-lg h-96 -top-2 ring-1 ring-black">
+        <Menu.Items className="absolute left-0 w-56 overflow-y-auto origin-top-left transform -translate-y-full bg-black divide-y rounded-md shadow-lg h-22 -top-2 ring-1 ring-black">
           <div className="py-1">
             {languages?.length > 0 ? languages.map((language, index) => (
               <Menu.Item key={language.code}>
