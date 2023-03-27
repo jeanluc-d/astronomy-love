@@ -27,7 +27,7 @@ router.post('/translations', async (req, res) => {
 
       // check if usage is within limits,
       // buffer is used since we're sending large chunks of text ~1000chars per request
-      if (count < limit - BUFFER_SIZE && to === 'fr') {
+      if (count < limit - BUFFER_SIZE) {
         // get variables and create a cache key
         const cacheKey = `${date}_${to}`;
 
