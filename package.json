@@ -87,6 +87,7 @@
     "poster": "./client/src/api/poster",
     "fetcher": "./client/src/api/fetcher",
     "public": "./client/public",
+    "hooks": "./client/src/hooks",
     "useLocalStorageState": "./client/src/hooks/useLocalStorageState/useLocalStorageState"
   }
 }
